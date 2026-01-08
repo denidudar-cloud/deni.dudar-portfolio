@@ -1,0 +1,553 @@
+<html lang="en" class="dark scroll-smooth"><head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>SaaS / Enterprise - Denis Dudar</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://unpkg.com/lucide@latest"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style>
+    
+    <style>
+    :root {
+      --font-sans: 'Inter', sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: #030005; /* Slightly purple-tinted black */
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6, .font-display {
+      font-family: var(--font-display);
+    }
+    .font-serif {
+      font-family: var(--font-serif);
+    }
+    
+    /* Border Gradient Utility */
+    .border-gradient {
+      position: relative;
+    }
+    .border-gradient::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background: linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    
+    /* Animations */
+    @keyframes animationIn {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes fadeInSlide {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes border-spin {
+      to { --gradient-angle: 360deg; }
+    }
+    
+    /* Animation Classes */
+    .animate-on-scroll { animation-play-state: paused !important; opacity: 0; }
+    .animate-on-scroll.animate { animation: animationIn 0.8s ease-out forwards; animation-play-state: running !important; }
+    
+    /* Custom Properties for Shiny Button */
+    @property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+    @property --gradient-shine { syntax: "<color>"; initial-value: #a78bfa; inherits: false; }
+    
+    .shiny-cta {
+      --gradient-angle: 0deg;
+      --gradient-angle-offset: 0deg;
+      --gradient-percent: 20%;
+      --gradient-shine: #8b5cf6; /* violet-500 */
+      --gradient-border: #7c3aed; /* violet-600 */
+      font-family: inherit;
+      color: #ffffff;
+      background: linear-gradient(#050505, #050505) padding-box,
+                  conic-gradient(from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+                  transparent 0%,
+                  var(--gradient-border) 5%,
+                  var(--gradient-shine) 15%,
+                  var(--gradient-border) 30%,
+                  transparent 40%,
+                  transparent 100%) border-box;
+      border: 1px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 25px -5px rgba(139, 92, 246, 0.6);
+      animation: border-spin 3s linear infinite;
+    }
+    .shiny-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.6), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+    .shiny-cta:hover::after { opacity: 0.9; }
+    
+    /* Utilities */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+    </style>
+</head>
+<body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
+
+<!-- Background (component) added by Aura -->
+<div class="aura-background-component fixed top-0 w-full h-screen -z-10" data-alpha-mask="80" style="; mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)"><div class="aura-background-component top-0 w-full -z-10 absolute h-full">
+  <div data-us-project="aNQ1HJcO2IvNyDCGls8J" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+  <script type="text/javascript">
+    !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+  </script>
+</div></div>
+
+  <!-- Background Gradients (Intensified) -->
+  <div class="fixed top-0 w-full h-screen -z-10 overflow-hidden pointer-events-none">
+    <div class="-translate-x-1/2 blur-[120px] bg-violet-700/30 w-[900px] h-[500px] rounded-full absolute top-[-100px] left-1/2 mix-blend-screen"></div>
+    <div class="absolute bottom-0 right-0 w-[800px] h-[600px] bg-fuchsia-800/20 blur-[130px] rounded-full translate-y-1/2 translate-x-1/4 mix-blend-screen"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed z-50 bg-[#030005]/80 w-full border-white/5 border-b top-0 backdrop-blur-md">
+    <div class="flex h-16 max-w-7xl mx-auto px-6 items-center justify-between">
+      <a href="project.html" class="text-xl font-bold tracking-tight text-white font-display hover:text-violet-300 transition-colors">Denys Dudar</a>
+      
+      <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+        <a href="project.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Overview</a>
+        <a href="case_studies.html" class="text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Case Studies</a>
+        <a href="About Page.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">About</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+            Resume
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-32 pb-24 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- Section 1: Hero -->
+        <section class="max-w-4xl mx-auto text-center mb-24 animate-on-scroll">
+            <span class="inline-block py-1 px-3 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold tracking-wide uppercase mb-6">SaaS / Enterprise</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] mb-8 font-display">
+                Merging features of three conferencing tools into a unified internal solution.
+            </h1>
+        </section>
+
+        <!-- Section 2: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5 group">
+                <img src="saas enterproce/project-hero-laptop.png" alt="SaaS Enterprise Hero" class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0 relative z-10">
+                <video src="saas enterproce/project-hero.mp4" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none"></video>
+            </div>
+        </section>
+
+        <!-- Video Playback Script -->
+        <script>
+            document.querySelectorAll('video').forEach(video => {
+                const container = video.closest('.group');
+                if (container) {
+                    container.addEventListener('mouseenter', () => {
+                        video.play().catch(e => console.log('Autoplay prevented:', e));
+                    });
+                    container.addEventListener('mouseleave', () => {
+                        video.pause();
+                        video.currentTime = 0;
+                    });
+                }
+            });
+        </script>
+
+        <!-- Section 3: About the client -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">About the client</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    A leading company with the mission to make education smarter and drive change through data-driven solutions turned to us to create a compelling and functional design for its internal solution. The client tackled a massive project aimed at optimizing their operational workflows and reducing expenses by merging three existing tools into an integral customized internal solution.
+                </p>
+                <p>
+                    This app is a more affordable and operationally optimized alternative to such complex web conferencing products as Adobe Connect or Microsoft Teams which the client used previously. It’s a unique software suite for conducting online meetings, webinars, workshops, training courses, surveys, and other real-time collective virtual experiences. Along with actually holding events, the platform provides services for their planning, managing, record-keeping, and templating.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Overview -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Overview</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    Considering major time constraints, our team quickly assigned three specialists to work on this challenging yet exciting project.
+                </p>
+                <p>
+                    Our team thoroughly researched the competitive landscape as well as analyzed the client’s internal workflows to make a solution that would satisfy their needs. Based on the data collected we made information architecture and then created a prototype to make the development process easier and save time and money for the client.
+                </p>
+                <p>
+                    As a result, in 5 weeks we not only designed a prototype, improved the usability and look of the product but optimized all existing flows, and introduced new features, and multi-channel functionality.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-feature-ui.png" alt="Feature UI" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 6: Challenges & Result -->
+        <section class="max-w-5xl mx-auto mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 animate-on-scroll">
+            <div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Challenges</h2>
+                <ul class="space-y-4 text-neutral-400">
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Incorporate three tools with different functionality into one full-scale platform that will preserve core features and facilitate all internal workflows;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Optimally design extensive functionality without visually cluttering and overcharging users;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Fit into tight timeframes and deliver exceptional results within one month of collaboration;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Adapt to workflow instability and amend requirements with the maximum flexibility and deliver the tool which corresponds to provided requirements;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Perform a modern and user-oriented tool design while taking into consideration multiple roles envisaged for this tool as well as extensive functionality which required extra effort from our team;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Create a simple yet meaningful signup/login process for the multitude of actors and their roles in virtual experiences.</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Result</h2>
+                <ul class="space-y-4 text-neutral-400">
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>On top of insights provided by the client, have done additional research for a deeper product understanding and created powerful information architecture based on the data and requirements collected;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Met all time and budget requirements which were integral for the client;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Developed a prototype to reduce the time and money needed during the process;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Optimized user flows and improved UX/UI of existing tools used by employees;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Envisaged quick and easy onboarding and convenient usage of the tool;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Enhanced the product's branding to make it recognizable and convey the company's identity;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Came up with an efficient design for a registration form builder to enable connecting to different devices and processing all questions from the admin role;</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 7: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-dashboard-ui.png" alt="Dashboard UI" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 8: Our approach -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Our approach</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    We understand that in the business world time is the most precious asset. Therefore, we are always ready to assist our clients even in the most tight deadlines. Our team has enough resources to quickly onboard and assign specialists with the most relevant expertise and skills to start working on the project as soon as possible and deliver excellent results.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 9: Main focus -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Main focus of our UX/UI design</h2>
+                <p class="text-neutral-400 leading-relaxed text-lg mb-6">
+                    Taking into account the competitive landscape as well as outcomes of our internal user needs research, we were concentrating on the three following objectives:
+                </p>
+                <ul class="space-y-4 text-neutral-400 text-lg">
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Designing extensive functionality not to visually clutter and overcharge users;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Making the overall design easily recognizable inside the company and conveying the company's identity;</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Working through different flows for the multitude of actors and their roles in virtual experiences to successfully customize the design according to the user's request.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-ux-focus.png" alt="UX Focus" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 10: Participant view -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Participant view</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        Participants have a whole range of features for effective engagement with the virtual process, especially when it comes to educational/training events. This includes an intuitive user interface for watching and listening, taking notes, answering multiple-choice questions, and chatting with other participants in the most straightforward manner.
+                    </p>
+                    <p>
+                        Our team solved the challenge of creating a simple yet meaningful signup/login process for the multitude of actors and their roles in virtual experiences. It was paramount for the system to unmistakably identify the user type at the input while not overburdening the user experience at this stage.
+                    </p>
+                    <p>
+                        Our specialists have found a way out by incorporating a calendar and a direct invitation algorithm which comprises an exact date, time, and time zone of a particular event that a user might intend to join.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-participant-view.png" alt="Participant View" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 11: Host view -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Host view</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        The role of a host has primary significance in virtual conferencing and learning events as they are directly responsible for organizing and conducting a particular meeting. Our specialists tried to make the host's planning process as smooth and seamless as possible. These convenient and elaborately designed features enable launching an event using a template or starting from scratch, switching between screens and sharing it with participants, uploading templates with users, and survey questions while having a space to leave notes during the meetings.
+                    </p>
+                </div>
+            </div>
+            <div class="space-y-8">
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                    <img src="saas enterproce/project-host-view.png" alt="Host View 1" class="w-full h-full object-cover">
+                </div>
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5 group">
+                    <img src="saas enterproce/project-full-interface.png" alt="Host View 2" class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0 relative z-10">
+                    <video src="saas enterproce/project-full-interface.mp4" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none"></video>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 12: Report customization -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Report customization</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        The client had a need to easily store and export the results of surveys. The team channeled efforts into enabling different report options while making them highly customizable to analyze this data further. We have worked thoroughly on making it possible and coming up with solutions to allow the analytic tool to process those reports.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-report-screen.png" alt="Report Screen" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 13: Documentation and dev support -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Documentation and dev support</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        First of all, we created a clickable prototype of the full product to showcase interactions to developers and streamline the further development process. Also, our team performed a detailed product front-end audit to make sure everything works seamlessly. We conducted a thorough QA and pointed out some issues to developers so they can improve the solution and deliver a functional and impeccable tool for their internal employees.
+                    </p>
+                    <p>
+                        In addition, our specialists developed a comprehensive design system for the client in order to streamline the implementation of all of their future ideas and envisioned projects. We took into consideration the client’s visual identity and made this design system consistent and easily recognizable.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="saas enterproce/project-dev-support.png" alt="Dev Support" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- View Other Work -->
+        <section class="max-w-7xl mx-auto px-6 mb-24 animate-on-scroll">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-semibold text-white font-display">View Other Work</h2>
+                <a href="case_studies.html" class="text-sm font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+                    View All
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Real Estate -->
+                <a href="project_real_estate.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            Real Estate
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Property Investment Platform</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Revamped UX design for a sustainable property investment project.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Real Estate</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project Lie Detector -->
+                <a href="project_lie_detector.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            Security / Software
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Desktop Lie Detector Software</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Redesigning and uniting desktop applications into a single solution for human behavior analysis and screenings.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Desktop App</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </div>
+  </main>
+
+  <!-- Footer CTA -->
+  <section class="animate-on-scroll border-white/5 border-t pt-20 pr-6 pb-20 pl-6" id="contact">
+    <div class="relative max-w-4xl mx-auto text-center">
+      <div class="flex items-center justify-center mb-6">
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wide border rounded-full px-3 py-1 text-neutral-300/80 bg-white/5 border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-violet-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+          Start Your Transformation
+        </span>
+      </div>
+
+      <h2 class="md:text-6xl text-4xl font-semibold text-white tracking-tight">
+        Have a Great
+      </h2>
+      <h2 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mt-1">
+        <span class="bg-clip-text font-medium text-transparent font-serif bg-gradient-to-br from-[#8A5CF5] via-[#ffffff] to-[#8A5CF5] pr-2 drop-shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+          Idea?
+        </span>
+      </h2>
+      <p class="md:text-lg text-base text-neutral-400 max-w-xl mt-6 mr-auto ml-auto">
+        I can help businesses employ design to improve communication and increase sales of products and services.
+      </p>
+
+      <div class="relative inline-block group mt-10">
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="shiny-cta group overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 rounded-full relative shadow-2xl inline-block">
+          <div class="z-10 flex gap-3 px-8 py-3 relative items-center">
+            <span class="text-base font-semibold tracking-tight text-white transition-colors group-hover:text-violet-100">
+              Get in Contact
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-5 h-5 text-violet-200 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="border-t border-white/5 bg-neutral-900/10 backdrop-blur-xl relative z-10">
+    <div class="max-w-7xl mx-auto">
+        <section class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/5 border-b border-white/5 bg-transparent">
+            <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://dribbble.com/Asiko" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Dribbble</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://www.instagram.com/den.dudar/" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Instagram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Download CV</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-y-1 transition-all"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+            </a>
+        </section>
+
+        <footer class="flex flex-col md:flex-row justify-between p-8 md:p-12 text-xs text-neutral-600 bg-transparent backdrop-blur-sm">
+            <div class="flex flex-col gap-2 mb-8 md:mb-0">
+                <a href="mailto:deni.dudar@gmail.com" class="text-neutral-400 hover:text-violet-400 transition-colors font-geist-mono">deni.dudar@gmail.com</a>
+                <span class="text-neutral-600 font-geist-mono">+380 63 742 09 82</span>
+            </div>
+            <div class="flex flex-col gap-2 text-left md:text-right md:items-end">
+                <span class="text-neutral-500">Lviv, Ukraine</span>
+                <span class="text-neutral-700">© 2026 Denis Dudar Portfolio</span>
+            </div>
+        </footer>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Scroll Animation Observer
+    (function () {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+            observer.observe(el);
+        });
+    })();
+  </script>
+
+</body></html>

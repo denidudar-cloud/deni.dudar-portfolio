@@ -1,0 +1,756 @@
+<html lang="en" class="dark scroll-smooth"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me - Engineer &amp; Designer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-serif: 'Instrument Serif', serif;
+  --font-mono: 'Geist Mono', monospace;
+}
+body {
+  font-family: var(--font-sans);
+  background-color: #030005;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+}
+.font-serif {
+  font-family: var(--font-serif);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Border Gradient Utility */
+.border-gradient {
+  position: relative;
+}
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes animationIn {
+  0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+@keyframes fadeInSlide {
+  0% { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+@keyframes border-spin {
+  to { --gradient-angle: 360deg; }
+}
+
+/* Seamless Horizontal Scroll */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+/* Vertical Marquee Animation */
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.animate-marquee-vertical {
+  animation: marquee-vertical 40s linear infinite;
+}
+/*.animate-marquee-vertical:hover {
+  animation-play-state: paused;
+}*/
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 60s linear infinite;
+}
+/*.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}*/
+
+/* Custom Properties for Shiny Button */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+@property --gradient-shine { syntax: "<color>"; initial-value: #a78bfa; inherits: false; }
+
+.shiny-cta {
+  --gradient-angle: 0deg;
+  --gradient-angle-offset: 0deg;
+  --gradient-percent: 20%;
+  --gradient-shine: #8b5cf6;
+  --gradient-border: #7c3aed;
+  font-family: inherit;
+  color: #ffffff;
+  background: linear-gradient(#050505, #050505) padding-box,
+              conic-gradient(from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+              transparent 0%,
+              var(--gradient-border) 5%,
+              var(--gradient-shine) 15%,
+              var(--gradient-border) 30%,
+              transparent 40%,
+              transparent 100%) border-box;
+  border: 1px solid transparent;
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 25px -5px rgba(139, 92, 246, 0.6);
+  animation: border-spin 3s linear infinite;
+}
+.shiny-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.6), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+.shiny-cta:hover::after { opacity: 0.9; }
+
+/* Animation Classes */
+.animate-on-scroll { animation-play-state: paused !important; opacity: 0; }
+.animate-on-scroll.animate { animation: animationIn 0.8s ease-out forwards; animation-play-state: running !important; }
+.animate-hero-element { opacity: 0; animation-fill-mode: forwards; }
+.animate-badge { animation: fadeInSlide 0.6s ease-out 0.2s forwards; }
+.animate-title { animation: fadeInSlide 0.8s ease-out 0.4s forwards; }
+.animate-desc { animation: fadeInSlide 0.8s ease-out 0.6s forwards; }
+.animate-grid { animation: fadeInSlide 0.8s ease-out 1.0s forwards; }
+
+/* -----------------------------------------------------------------
+   FAN CARD STYLES
+   ----------------------------------------------------------------- */
+.fan-container-wrapper { perspective: 1000px; }
+.fan-container:hover .glass { transform: rotate(0deg) !important; margin: 0 15px !important; }
+.glass {
+  position: relative;
+  width: 280px;
+  height: 360px;
+  background: linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 -50px;
+  transition: 0.5s ease-in-out;
+  transform-origin: center bottom;
+}
+.card-content {
+  background: #FAFAFA;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+}
+.glass:hover {
+  transform: translateY(-20px) scale(1.05) !important; 
+  z-index: 50 !important;
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
+}
+@media (max-width: 1024px) {
+  .fan-container { flex-wrap: wrap; gap: 20px; height: auto !important; padding: 40px 0; }
+  .glass { transform: none !important; margin: 0 !important; }
+}
+
+/* -----------------------------------------------------------------
+   BOOK REVEAL CARD STYLES
+   ----------------------------------------------------------------- */
+.transform-style-3d { transform-style: preserve-3d; }
+.origin-left { transform-origin: left; }
+.book-container:hover .cover { transform: rotateY(-85deg); }
+.book-container:hover .cover img { filter: hue-rotate(15deg) brightness(0.8); }
+.book-container:hover .cover .tint { background-color: rgba(139, 92, 246, 0.2); }
+.book-container:hover .desc-h3 { opacity: 1; transform: translateY(0); transition: all 0.4s ease 0.2s; }
+.book-container:hover .desc-p { opacity: 1; transform: translateY(0); transition: all 0.4s ease 0.35s; }
+
+</style>
+<link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style>
+</head>
+<body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
+
+<!-- Background (component) added by Aura -->
+<div class="aura-background-component fixed top-0 w-full h-screen -z-10" data-alpha-mask="80" style="; mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)"><div class="aura-background-component top-0 w-full -z-10 absolute h-full">
+  <div data-us-project="aNQ1HJcO2IvNyDCGls8J" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+  <script type="text/javascript">
+    !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+  </script>
+</div></div>
+
+    <!-- Background -->
+    <div class="fixed top-0 w-full h-screen -z-10 overflow-hidden pointer-events-none">
+        <div class="-translate-x-1/2 blur-[120px] bg-violet-700/30 w-[900px] h-[500px] rounded-full absolute top-[-100px] left-1/2 mix-blend-screen"></div>
+        <div class="absolute bottom-0 right-0 w-[800px] h-[600px] bg-fuchsia-800/20 blur-[130px] rounded-full translate-y-1/2 translate-x-1/4 mix-blend-screen"></div>
+        <div class="fixed top-0 w-full h-screen -z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed z-50 bg-[#030005]/80 w-full border-white/5 border-b top-0 backdrop-blur-md">
+        <div class="flex h-16 max-w-7xl mx-auto px-6 items-center justify-between">
+            <a href="project.html" class="text-xl font-bold tracking-tight text-white font-display hover:text-violet-300 transition-colors">Denys Dudar</a>
+            
+            <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+                <a href="project.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Overview</a>
+                <a href="case_studies.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Case Studies</a>
+                <a href="About Page.html" class="text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">About</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+                    Resume
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                </a>
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+          Get in Touch
+        </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="overflow-hidden pt-36 pr-6 pb-24 pl-6 relative">
+        <div class="flex flex-col z-10 text-center max-w-5xl mx-auto items-center">
+            
+            <!-- <div class="inline-flex animate-hero-element animate-badge mb-8 items-center">
+                <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-medium backdrop-blur-sm border-violet-500/30 bg-violet-500/10 text-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                  <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-violet-400"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-500 box-shadow-[0_0_10px_#8b5cf6]"></span>
+                  </span>
+                  Available for new projects
+                </div>
+            </div> -->
+
+            <h1 class="leading-[1.05] animate-hero-element animate-title sm:text-6xl lg:text-5xl text-5xl font-medium text-white tracking-tighter mb-6">
+                Engineer by education.
+                <br>
+                <span class="text-[#ffffff]"> <span class="font-medium text-violet-500 font-serif drop-shadow-[0_0_15px_rgba(139,92,246,0.4)] italic">Designer</span> by choice.</span>
+            </h1>
+
+            <p class="sm:text-lg leading-relaxed animate-hero-element animate-desc text-base text-neutral-400 max-w-2xl mx-auto border-l-2 border-violet-500/50 pl-6 mt-6">
+                "I haven't taken a vacation in 7 years. I didn't burn out, I just fell in love with the process. This site was built in 3 days during my first actual Vacation."
+            </p>
+
+            <div class="mt-20 relative aspect-video w-full overflow-hidden rounded-2xl border-gradient bg-[#0A0A0A] p-1 animate-hero-element animate-grid group">
+                <div class="relative w-full h-full rounded-xl overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                    <img src="About Page Materials/img_hero_about.png" alt="Profile Hero" class="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105">
+                    <div class="absolute bottom-6 left-6 z-20 text-left">
+                        <p class="text-xs font-mono uppercase tracking-widest text-neutral-400">Profile Shot</p>
+                        <p class="text-white font-medium mt-1">Lviv, Ukraine</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section id="about" class="py-24 border-t border-white/5 relative overflow-hidden bg-neutral-900/10 backdrop-blur-sm">
+        <div class="mx-auto max-w-7xl px-6 animate-on-scroll">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+                
+                <!-- Left Column: Text -->
+                <div class="flex flex-col gap-8">
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tighter text-white font-display">My journey</h2>
+                    
+                    <div class="space-y-8 text-sm md:text-base text-neutral-400 leading-relaxed font-light">
+                        <p>
+                            Began in the engineering halls, where I studied precision and logic. I graduated with honors, but my heart was elsewhere. In 2018, while working with design-related software, I realized that creating user experiences was my true calling.
+                        </p>
+                        <p>
+                            I started with freelance projects for friends and acquaintances, quickly realizing that I wanted to dedicate my life to design. Since then, I've been on a continuous learning curve, applying an engineer's structural thinking to creative digital solutions.
+                        </p>
+                        <p>
+                            Currently based in Lviv, I maintain a balance between intense work and physical activity. I'm a firm believer that "a healthy body leads to healthy thoughts," which is why you'll often find me at the gym when I'm not designing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Bento Grid -->
+                <div class="relative h-[600px] overflow-hidden w-full" style="mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);">
+                    <div class="animate-marquee-vertical">
+                        <div class="grid grid-cols-2 gap-4 mb-4 w-full">
+                            <!-- Modified Item 3: Birth Year (Now top left) -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <!-- Calendar Icon -->
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Birth Year</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">1996</span>
+                            </div>
+
+                            <!-- Modified Item 4: Experience (Now top right) -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <!-- Briefcase Icon -->
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Experience</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">8 Yrs</span>
+                            </div>
+
+                            <!-- Item 5: Work at Cieden -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Work at</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">Cieden</span>
+                            </div>
+
+                            <!-- Item 6: TheProcess (3D Book Reveal) -->
+                            <div class="col-span-1 aspect-square book-container relative w-full h-full rounded-2xl" style="perspective: 2000px;">
+                                <!-- Main Book Wrapper -->
+                                <div class="book relative w-full h-full transform-style-3d">
+                                    
+                                    <!-- INNER (Content behind cover) -->
+                                    <div class="inner absolute inset-0 rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/5">
+                                        <img src="About Page Materials/opened_book_img.jpg" alt="Inner Content" class="w-full h-full object-cover opacity-50">
+                                        
+                                        <div class="book-desc absolute bottom-6 left-6 right-6 text-white">
+                                            <h3 class="desc-h3 text-xl font-display font-bold mb-2 translate-y-2 opacity-0">Remember this!</h3>
+                                            <p class="desc-p text-xs text-neutral-300 translate-y-2 opacity-0 leading-relaxed">
+                                                Something that goes beyond the norm and will be remembered more than this CV.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- COVER (Front layer) -->
+                                    <div class="cover absolute inset-0 rounded-2xl overflow-hidden shadow-xl origin-left transition-all duration-700 ease-out bg-gradient-to-br from-violet-600 via-fuchsia-600 to-indigo-800 border border-white/10">
+                                        <!-- Abstract image for cover texture -->
+                                        <img src="About Page Materials/img_my_jorny_book_cover.png" alt="Cover" class="w-full h-full object-cover transition-all duration-700 mix-blend-overlay opacity-60">
+                                        
+                                        <div class="absolute inset-0 flex items-center justify-center p-6 text-center">
+                                            <h2 class="text-2xl font-bold font-display text-white tracking-tighter drop-shadow-lg">How to create a memorable design?</h2>
+                                        </div>
+
+                                        <div class="absolute bottom-6 w-full text-center">
+                                            <span class="text-[10px] uppercase tracking-widest text-white/70 animate-pulse border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Hover me</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate Grid for Loop -->
+                        <div class="grid grid-cols-2 gap-4 w-full">
+                            <!-- Modified Item 3: Birth Year (Now top left) -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <!-- Calendar Icon -->
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Birth Year</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">1996</span>
+                            </div>
+
+                            <!-- Modified Item 4: Experience (Now top right) -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <!-- Briefcase Icon -->
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Experience</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">8 Yrs</span>
+                            </div>
+
+                            <!-- Item 5: Work at Cieden -->
+                            <div class="col-span-1 rounded-2xl bg-white/[0.03] border border-white/[0.05] p-6 aspect-square flex flex-col justify-end relative overflow-hidden group">
+                                <div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                </div>
+                                <h4 class="text-neutral-500 text-xl font-medium mb-2 tracking-tight">Work at</h4>
+                                <span class="text-3xl font-display font-medium text-white tracking-tighter text-neutral-200">Cieden</span>
+                            </div>
+
+                            <!-- Item 6: TheProcess (3D Book Reveal) -->
+                            <div class="col-span-1 aspect-square book-container relative w-full h-full rounded-2xl" style="perspective: 2000px;">
+                                <!-- Main Book Wrapper -->
+                                <div class="book relative w-full h-full transform-style-3d">
+                                    
+                                    <!-- INNER (Content behind cover) -->
+                                    <div class="inner absolute inset-0 rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/5">
+                                        <img src="About Page Materials/opened_book_img.jpg" alt="Inner Content" class="w-full h-full object-cover opacity-50">
+                                        
+                                        <div class="book-desc absolute bottom-6 left-6 right-6 text-white">
+                                            <h3 class="desc-h3 text-xl font-display font-bold mb-2 translate-y-2 opacity-0">Remember this!</h3>
+                                            <p class="desc-p text-xs text-neutral-300 translate-y-2 opacity-0 leading-relaxed">
+                                                Something that goes beyond the norm and will be remembered more than this CV.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- COVER (Front layer) -->
+                                    <div class="cover absolute inset-0 rounded-2xl overflow-hidden shadow-xl origin-left transition-all duration-700 ease-out bg-gradient-to-br from-violet-600 via-fuchsia-600 to-indigo-800 border border-white/10">
+                                        <!-- Abstract image for cover texture -->
+                                        <img src="About Page Materials/img_my_jorny_book_cover.png" alt="Cover" class="w-full h-full object-cover transition-all duration-700 mix-blend-overlay opacity-60">
+                                        
+                                        <div class="absolute inset-0 flex items-center justify-center p-6 text-center">
+                                            <h2 class="text-2xl font-bold font-display text-white tracking-tighter drop-shadow-lg">How to create a memorable design?</h2>
+                                        </div>
+
+                                        <div class="absolute bottom-6 w-full text-center">
+                                            <span class="text-[10px] uppercase tracking-widest text-white/70 animate-pulse border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Hover me</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Moments Section -->
+    <section id="moments" class="py-24 border-t border-white/5 overflow-hidden">
+        <div class="mx-auto max-w-7xl px-6 mb-12">
+            <h2 class="text-3xl sm:text-4xl font-medium tracking-tight text-white animate-on-scroll">Moments</h2>
+        </div>
+        
+        <div class="relative w-full overflow-hidden">
+            <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#030005] to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#030005] to-transparent z-10 pointer-events-none"></div>
+            
+            <div class="flex animate-infinite-scroll gap-6 w-max">
+                <!-- Set 1 -->
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/fuckap night.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Fuckup Night">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Speaker</span><h3 class="text-xl font-medium text-white tracking-tight">Fuckup Night</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/Halloween-auction.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Halloween Auction">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Event</span><h3 class="text-xl font-medium text-white tracking-tight">Halloween Auction</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/happy thanksgiving.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Happy Thanksgiving">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Holiday</span><h3 class="text-xl font-medium text-white tracking-tight">Happy Thanksgiving</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/independence-day.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Independence Day">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Holiday</span><h3 class="text-xl font-medium text-white tracking-tight">Independence Day</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/krupa meet don norman.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Krupa Meet Don Norman">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Conference</span><h3 class="text-xl font-medium text-white tracking-tight">Krupa Meet Don Norman</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Set 2 (Duplicate) -->
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/fuckap night.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Fuckup Night">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Speaker</span><h3 class="text-xl font-medium text-white tracking-tight">Fuckup Night</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/Halloween-auction.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Halloween Auction">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Event</span><h3 class="text-xl font-medium text-white tracking-tight">Halloween Auction</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/happy thanksgiving.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Happy Thanksgiving">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Holiday</span><h3 class="text-xl font-medium text-white tracking-tight">Happy Thanksgiving</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/independence-day.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Independence Day">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Holiday</span><h3 class="text-xl font-medium text-white tracking-tight">Independence Day</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-gradient p-1 rounded-2xl bg-[#0A0A0A] w-[350px] sm:w-[400px]">
+                    <div class="group relative h-[500px] rounded-xl overflow-hidden bg-neutral-900">
+                        <img src="About Page Materials/krupa meet don norman.png" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-80" alt="Krupa Meet Don Norman">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="flex items-end justify-between border-t border-white/10 pt-4">
+                                <div><span class="text-violet-500 text-xs font-bold tracking-widest uppercase mb-1 block">Conference</span><h3 class="text-xl font-medium text-white tracking-tight">Krupa Meet Don Norman</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- COURSES SECTION -->
+    <section id="courses" class="py-32 border-t border-white/5 bg-neutral-900/10 backdrop-blur-sm overflow-hidden">
+        <div class="mx-auto max-w-7xl px-6 mb-8 text-center animate-on-scroll">
+            <h2 class="text-3xl sm:text-4xl font-medium tracking-tight text-white">Certifications</h2>
+            <p class="mt-4 text-neutral-400 max-w-2xl mx-auto">Continuous learning is the key. Hover to view details.</p>
+        </div>
+
+        <div class="flex overflow-visible w-full pt-12 pr-12 pb-12 pl-12 relative items-center justify-center">
+            <div class="fan-container" style="display: flex; justify-content: center; align-items: center; height: 400px;">
+                
+                <!-- Card 1 (Left Outer) -->
+                <div class="glass" style="transform: rotate(-15deg); z-index: 1;">
+                    <div class="card-content">
+                        <div class="relative z-20">
+                            <div class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-neutral-100 border border-neutral-200 shadow-sm mb-6">
+                                <img src="About Page Materials/Projector.png" alt="Projector" class="h-5 w-5">
+                            </div>
+                            <h3 class="leading-tight text-3xl font-bold text-neutral-900 tracking-tight">Mobile Interface Advanced</h3>
+                        </div>
+                        <div class="pt-5 border-t border-neutral-200 relative z-20">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Provider</div>
+                            <div class="text-sm font-semibold text-neutral-900 flex items-center gap-2">
+                                Projector <span class="text-neutral-400">•</span> 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (Left Inner) -->
+                <div class="glass" style="transform: rotate(-5deg); z-index: 2;">
+                    <div class="card-content">
+                        <div class="relative z-20">
+                            <div class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-neutral-100 border border-neutral-200 shadow-sm mb-6">
+                                <img src="About Page Materials/Product Psychology.png" alt="Growth.Design" class="h-5 w-5">
+                            </div>
+                            <h3 class="leading-tight text-3xl font-bold text-neutral-900 tracking-tight">Product Psychology</h3>
+                        </div>
+                        <div class="pt-5 border-t border-neutral-200 relative z-20">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Provider</div>
+                            <div class="text-sm font-semibold text-neutral-900 flex items-center gap-2">
+                                Growth.Design <span class="text-neutral-400">•</span> 2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 (Right Inner) -->
+                <div class="glass" style="transform: rotate(5deg); z-index: 3;">
+                    <div class="card-content">
+                        <div class="relative z-20">
+                            <div class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-neutral-100 border border-neutral-200 shadow-sm mb-6">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" class="h-5 w-5">
+                            </div>
+                            <h3 class="leading-tight text-3xl font-bold text-neutral-900 tracking-tight">UX Design Certificate</h3>
+                        </div>
+                        <div class="pt-5 border-t border-neutral-200 relative z-20">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Provider</div>
+                            <div class="text-sm font-semibold text-neutral-900 flex items-center gap-2">
+                                Google <span class="text-neutral-400">•</span> 2023
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 (Right Outer) -->
+                <div class="glass" style="transform: rotate(15deg); z-index: 4;">
+                    <div class="card-content">
+                        <div class="relative z-20">
+                            <div class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-neutral-100 border border-neutral-200 shadow-sm mb-6">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" class="h-5 w-5">
+                            </div>
+                            <h3 class="leading-tight text-3xl font-bold text-neutral-900 tracking-tight">Google Prompting Essentials</h3>
+                        </div>
+                        <div class="pt-5 border-t border-neutral-200 relative z-20">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">Provider</div>
+                            <div class="text-sm font-semibold text-neutral-900 flex items-center gap-2">
+                                Google <span class="text-neutral-400">•</span> 2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section id="achievements" class="py-24 border-t border-white/5 bg-neutral-900/10 backdrop-blur-sm">
+        <div class="mx-auto max-w-4xl px-6 animate-on-scroll">
+            <div class="group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                <div class="relative w-full aspect-video rounded-xl overflow-hidden mb-6">
+                    <img src="About Page Materials/hackathon_winner.JPG" alt="Hackathon Winner" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-60"></div>
+                    <div class="absolute top-6 right-6">
+                         <span class="rounded-full bg-violet-500/20 border border-violet-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.3)] backdrop-blur-md">Winner</span>
+                    </div>
+                </div>
+                <div class="px-6 pb-6">
+                    <h3 class="text-2xl font-semibold text-white mb-3 group-hover:text-violet-300 transition-colors">Hackathon Winner</h3>
+                    <p class="text-base text-neutral-400 leading-relaxed">
+                        April 2025: Led the Cieden &amp; @coax.digital team to build a sales engagement tool that streamlines client communication before design handoff. Recognized for best UX/UI implementation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="animate-on-scroll border-white/5 border-t pt-20 pr-6 pb-20 pl-6" id="contact">
+        <div class="relative max-w-4xl mx-auto text-center">
+            <div class="flex items-center justify-center mb-6">
+                <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wide border rounded-full px-3 py-1 text-neutral-300/80 bg-white/5 border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-violet-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                Ready to create?
+                </span>
+            </div>
+
+            <h2 class="md:text-6xl text-4xl font-semibold text-white tracking-tight">
+                Let's build something
+            </h2>
+            <h2 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mt-1">
+                <span class="bg-clip-text font-medium text-transparent font-serif bg-gradient-to-br from-[#8A5CF5] via-[#ffffff] to-[#8A5CF5] pr-2 drop-shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+                Exceptional.
+                </span>
+            </h2>
+            <p class="mt-6 text-base md:text-lg text-neutral-400 max-w-xl mx-auto">
+                Ready to turn complex engineering logic into seamless design experiences? I'm just an email away.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 mt-10 items-center justify-center">
+                <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="shiny-cta group overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 rounded-full relative shadow-2xl inline-block">
+                    <div class="z-10 flex gap-3 px-8 py-3 relative items-center">
+                    <span class="text-base font-semibold tracking-tight text-white transition-colors group-hover:text-violet-100">
+                        Get in Contact
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-5 h-5 text-violet-200 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="border-t border-white/5 bg-neutral-900/10 backdrop-blur-xl relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <section class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/5 border-b border-white/5 bg-transparent">
+            <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">LinkedIn</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </a>
+            <a href="https://dribbble.com/Asiko" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Dribbble</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </a>
+            <a href="https://www.instagram.com/den.dudar/" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Instagram</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </a>
+                <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                    <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Download CV</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-y-1 transition-all"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+                </a>
+            </section>
+
+            <footer class="flex flex-col md:flex-row justify-between p-8 md:p-12 text-xs text-neutral-600 bg-transparent backdrop-blur-sm">
+                <div class="flex flex-col gap-2 mb-8 md:mb-0">
+                    <a href="mailto:deni.dudar@gmail.com" class="text-neutral-400 hover:text-violet-400 transition-colors font-geist-mono">deni.dudar@gmail.com</a>
+                    <span class="text-neutral-600 font-geist-mono">+380 63 742 09 82</span>
+                </div>
+                <div class="flex flex-col gap-2 text-left md:text-right md:items-end">
+                    <span class="text-neutral-500">Lviv, Ukraine</span>
+                    <span class="text-neutral-700">© 2026 Denis Dudar Portfolio</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        (function () {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+                observer.observe(el);
+            });
+        })();
+    </script>
+
+</body></html>
+</body></html>

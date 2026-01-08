@@ -1,0 +1,499 @@
+<html lang="en" class="dark scroll-smooth"><head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Security / Software - Denis Dudar</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://unpkg.com/lucide@latest"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style>
+    
+    <style>
+    :root {
+      --font-sans: 'Inter', sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: #030005; /* Slightly purple-tinted black */
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6, .font-display {
+      font-family: var(--font-display);
+    }
+    .font-serif {
+      font-family: var(--font-serif);
+    }
+    
+    /* Border Gradient Utility */
+    .border-gradient {
+      position: relative;
+    }
+    .border-gradient::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background: linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    
+    /* Animations */
+    @keyframes animationIn {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes fadeInSlide {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes border-spin {
+      to { --gradient-angle: 360deg; }
+    }
+    
+    /* Animation Classes */
+    .animate-on-scroll { animation-play-state: paused !important; opacity: 0; }
+    .animate-on-scroll.animate { animation: animationIn 0.8s ease-out forwards; animation-play-state: running !important; }
+    
+    /* Custom Properties for Shiny Button */
+    @property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+    @property --gradient-shine { syntax: "<color>"; initial-value: #a78bfa; inherits: false; }
+    
+    .shiny-cta {
+      --gradient-angle: 0deg;
+      --gradient-angle-offset: 0deg;
+      --gradient-percent: 20%;
+      --gradient-shine: #8b5cf6; /* violet-500 */
+      --gradient-border: #7c3aed; /* violet-600 */
+      font-family: inherit;
+      color: #ffffff;
+      background: linear-gradient(#050505, #050505) padding-box,
+                  conic-gradient(from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+                  transparent 0%,
+                  var(--gradient-border) 5%,
+                  var(--gradient-shine) 15%,
+                  var(--gradient-border) 30%,
+                  transparent 40%,
+                  transparent 100%) border-box;
+      border: 1px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 25px -5px rgba(139, 92, 246, 0.6);
+      animation: border-spin 3s linear infinite;
+    }
+    .shiny-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.6), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+    .shiny-cta:hover::after { opacity: 0.9; }
+    
+    /* Utilities */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+    </style>
+</head>
+<body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
+
+<!-- Background (component) added by Aura -->
+<div class="aura-background-component fixed top-0 w-full h-screen -z-10" data-alpha-mask="80" style="; mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)"><div class="aura-background-component top-0 w-full -z-10 absolute h-full">
+  <div data-us-project="aNQ1HJcO2IvNyDCGls8J" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+  <script type="text/javascript">
+    !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+  </script>
+</div></div>
+
+  <!-- Background Gradients (Intensified) -->
+  <div class="fixed top-0 w-full h-screen -z-10 overflow-hidden pointer-events-none">
+    <div class="-translate-x-1/2 blur-[120px] bg-violet-700/30 w-[900px] h-[500px] rounded-full absolute top-[-100px] left-1/2 mix-blend-screen"></div>
+    <div class="absolute bottom-0 right-0 w-[800px] h-[600px] bg-fuchsia-800/20 blur-[130px] rounded-full translate-y-1/2 translate-x-1/4 mix-blend-screen"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed z-50 bg-[#030005]/80 w-full border-white/5 border-b top-0 backdrop-blur-md">
+    <div class="flex h-16 max-w-7xl mx-auto px-6 items-center justify-between">
+      <a href="project.html" class="text-xl font-bold tracking-tight text-white font-display hover:text-violet-300 transition-colors">Denys Dudar</a>
+      
+      <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+        <a href="project.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Overview</a>
+        <a href="case_studies.html" class="text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Case Studies</a>
+        <a href="About Page.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">About</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+            Resume
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-32 pb-24 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- Section 1: Hero -->
+        <section class="max-w-4xl mx-auto text-center mb-24 animate-on-scroll">
+            <span class="inline-block py-1 px-3 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold tracking-wide uppercase mb-6">Security / Software</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] mb-8 font-display">
+                Desktop Lie Detector Software
+            </h1>
+        </section>
+
+        <!-- Section 2: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5 group">
+                <img src="Lie detector/lie-detector-hero.png" alt="Lie Detector Hero" class="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0 relative z-10">
+                <video src="Lie detector/lie-detector-ui-concept.mp4" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none"></video>
+            </div>
+        </section>
+
+        <!-- Video Playback Script -->
+        <script>
+            document.querySelectorAll('video').forEach(video => {
+                const container = video.closest('.group');
+                if (container) {
+                    container.addEventListener('mouseenter', () => {
+                        video.play().catch(e => console.log('Autoplay prevented:', e));
+                    });
+                    container.addEventListener('mouseleave', () => {
+                        video.pause();
+                        video.currentTime = 0;
+                    });
+                }
+            });
+        </script>
+
+        <!-- Section 3: Overview -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Overview</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    Our client is an innovative provider of human behavior analysis and screenings. With their high-accuracy AI-assisted video analytics functionalities, they've been revolutionizing the industry. However, their platform wasn't as user-friendly as they'd like, with several desktop applications that made the interface complex and challenging to navigate.
+                </p>
+                <p>
+                    That's where Cieden came in! We helped our client redesign and unite their separate desktop applications into a single solution. The result? More intuitive navigation, new features, including analytics, wearables support, and expanded screening capabilities. With our help, our client provided an all-in-one tool for screening people on-site or analyzing video recordings.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-overview.png" alt="Lie Detector Overview" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 5: Benefits & Challenges -->
+        <section class="max-w-5xl mx-auto mb-24 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 animate-on-scroll">
+            <div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Benefits</h2>
+                <ul class="space-y-4 text-neutral-400">
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>A dream client – collaborative, open to new design ideas, and willing to trust our design team every step of the way.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Very few designs iterations</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Sharp and clear product documentation as input for the design</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Client was ready to work hand in hand with the designers</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Challenges</h2>
+                <ul class="space-y-4 text-neutral-400">
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>Tight and looming deadlines</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>End-users are unreachable</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-violet-500 mt-1.5">•</span>
+                        <span>No chance to experience the actual solution, documentation only</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 6: Simple but powerful -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Simple but powerful.</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    Our SaaS solution was crafted to deliver functionality and power while keeping the user experience seamless, simple, and straightforward, all with a touch of sheer elegance.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 7: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-simple-powerful.png" alt="Simple but Powerful" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 8: UI Concept -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">UI Concept</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    At the UI Concept stage, we immersed ourselves in the users' world and envisioned how this app would fit their needs.
+                </p>
+                <p>
+                    With a strong focus on video content analysis, our team experimented with layouts and balances to create the perfect user experience. Drawing inspiration from video editing tools, our Design Concept is tailored to integrate with the core function of media content processing seamlessly.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 9: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-ui-concept.png" alt="UI Concept" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 10: Working Process -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Working Process.</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    Our services are tailored to fit your business like a glove, providing tangible value that will leave you feeling like a weight has been lifted off your shoulders. Can we hear a sigh of relief?
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 11: Discovery Phase -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Discovery Phase</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        We believe every investigator deserves the best tools to do their job effectively. That's why we've been working hard to improve the software's interface and analysis capabilities based on extensive research and documentation. Our goal? To make the interrogation experience as smooth and intuitive as possible for investigators everywhere.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-discovery.png" alt="Discovery Phase" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 12: Information Architecture -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Information Architecture</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        As we delved into the product documentation, we gained insights into how users interacted with the system, identifying their needs and wants. Armed with this knowledge, we set out to create an information architecture that would make running screening procedures a breeze. By seamlessly merging multiple modules, we've created an experience that makes screening procedures efficient and stress-free.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-ia.png" alt="Information Architecture" class="w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- Section 13: Design System -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Design System</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        Our team has crafted a design system that guarantees a seamless and consistent user experience across all platforms and devices. This system comprises typography, color palette, iconography, and interactive components, which together steer the development of web and mobile applications.
+                    </p>
+                    <p>
+                        It's not just flexible and scalable, it's the secret ingredient to our project's success, eliminating inconsistencies, streamlining development, and delivering an exceptional user experience that users will love.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="Lie detector/lie-detector-design-system.png" alt="Design System" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 14: Documentation and dev support -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Documentation and dev support</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    When designs are implemented into code, it's common for bugs – and even UX issues – to appear. This is why our designers provide continued support throughout the development process. With the help of Simran Butalia of BeBop Technology, we identified additional error states to design while continuously reviewing the interface's development to ensure that everything was ending up pixel perfect.
+                </p>
+            </div>
+        </section>
+
+        <!-- View Other Work -->
+        <section class="max-w-7xl mx-auto px-6 mb-24 animate-on-scroll">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-semibold text-white font-display">View Other Work</h2>
+                <a href="case_studies.html" class="text-sm font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+                    View All
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Real Estate -->
+                <a href="project_real_estate.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            Real Estate
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Property Investment Platform</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Revamped UX design for a sustainable property investment project.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Real Estate</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project SaaS Enterprise -->
+                <a href="project_saas_enterprise.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            SaaS / Enterprise
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Unified Conferencing Solution</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Merging features of three conferencing tools into a unified internal solution for a leading education company.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Enterprise</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </div>
+  </main>
+
+  <!-- Footer CTA -->
+  <section class="animate-on-scroll border-white/5 border-t pt-20 pr-6 pb-20 pl-6" id="contact">
+    <div class="relative max-w-4xl mx-auto text-center">
+      <div class="flex items-center justify-center mb-6">
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wide border rounded-full px-3 py-1 text-neutral-300/80 bg-white/5 border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-violet-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+          Start Your Transformation
+        </span>
+      </div>
+
+      <h2 class="md:text-6xl text-4xl font-semibold text-white tracking-tight">
+        Have a Great
+      </h2>
+      <h2 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mt-1">
+        <span class="bg-clip-text font-medium text-transparent font-serif bg-gradient-to-br from-[#8A5CF5] via-[#ffffff] to-[#8A5CF5] pr-2 drop-shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+          Idea?
+        </span>
+      </h2>
+      <p class="md:text-lg text-base text-neutral-400 max-w-xl mt-6 mr-auto ml-auto">
+        I can help businesses employ design to improve communication and increase sales of products and services.
+      </p>
+
+      <div class="relative inline-block group mt-10">
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="shiny-cta group overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 rounded-full relative shadow-2xl inline-block">
+          <div class="z-10 flex gap-3 px-8 py-3 relative items-center">
+            <span class="text-base font-semibold tracking-tight text-white transition-colors group-hover:text-violet-100">
+              Get in Contact
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-5 h-5 text-violet-200 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="border-t border-white/5 bg-neutral-900/10 backdrop-blur-xl relative z-10">
+    <div class="max-w-7xl mx-auto">
+        <section class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/5 border-b border-white/5 bg-transparent">
+            <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://dribbble.com/Asiko" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Dribbble</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://www.instagram.com/den.dudar/" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Instagram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Download CV</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-y-1 transition-all"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+            </a>
+        </section>
+
+        <footer class="flex flex-col md:flex-row justify-between p-8 md:p-12 text-xs text-neutral-600 bg-transparent backdrop-blur-sm">
+            <div class="flex flex-col gap-2 mb-8 md:mb-0">
+                <a href="mailto:deni.dudar@gmail.com" class="text-neutral-400 hover:text-violet-400 transition-colors font-geist-mono">deni.dudar@gmail.com</a>
+                <span class="text-neutral-600 font-geist-mono">+380 63 742 09 82</span>
+            </div>
+            <div class="flex flex-col gap-2 text-left md:text-right md:items-end">
+                <span class="text-neutral-500">Lviv, Ukraine</span>
+                <span class="text-neutral-700">© 2026 Denis Dudar Portfolio</span>
+            </div>
+        </footer>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Scroll Animation Observer
+    (function () {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+            observer.observe(el);
+        });
+    })();
+  </script>
+
+</body></html>

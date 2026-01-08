@@ -1,0 +1,690 @@
+<html lang="en" class="dark scroll-smooth"><head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Payroll Management - Denis Dudar</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://unpkg.com/lucide@latest"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style>
+    
+    <style>
+    :root {
+      --font-sans: 'Inter', sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: #030005; /* Slightly purple-tinted black */
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6, .font-display {
+      font-family: var(--font-display);
+    }
+    .font-serif {
+      font-family: var(--font-serif);
+    }
+    
+    /* Border Gradient Utility */
+    .border-gradient {
+      position: relative;
+    }
+    .border-gradient::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background: linear-gradient(225deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    
+    /* Animations */
+    @keyframes animationIn {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes fadeInSlide {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+    }
+    @keyframes border-spin {
+      to { --gradient-angle: 360deg; }
+    }
+    
+    /* Animation Classes */
+    .animate-on-scroll { animation-play-state: paused !important; opacity: 0; }
+    .animate-on-scroll.animate { animation: animationIn 0.8s ease-out forwards; animation-play-state: running !important; }
+    
+    /* Custom Properties for Shiny Button */
+    @property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+    @property --gradient-shine { syntax: "<color>"; initial-value: #a78bfa; inherits: false; }
+    
+    .shiny-cta {
+      --gradient-angle: 0deg;
+      --gradient-angle-offset: 0deg;
+      --gradient-percent: 20%;
+      --gradient-shine: #8b5cf6; /* violet-500 */
+      --gradient-border: #7c3aed; /* violet-600 */
+      font-family: inherit;
+      color: #ffffff;
+      background: linear-gradient(#050505, #050505) padding-box,
+                  conic-gradient(from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+                  transparent 0%,
+                  var(--gradient-border) 5%,
+                  var(--gradient-shine) 15%,
+                  var(--gradient-border) 30%,
+                  transparent 40%,
+                  transparent 100%) border-box;
+      border: 1px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 25px -5px rgba(139, 92, 246, 0.6);
+      animation: border-spin 3s linear infinite;
+    }
+    .shiny-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.6), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+    .shiny-cta:hover::after { opacity: 0.9; }
+    
+    /* Utilities */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    /* Parallax Styles */
+    .transform-style-3d { transform-style: preserve-3d; }
+    .translate-z-10 { transform: translateZ(10px); }
+    .translate-z-20 { transform: translateZ(20px); }
+    .translate-z-30 { transform: translateZ(30px); }
+
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+    </style>
+</head>
+<body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
+
+<!-- Background (component) added by Aura -->
+<div class="aura-background-component fixed top-0 w-full h-screen -z-10" data-alpha-mask="80" style="; mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)"><div class="aura-background-component top-0 w-full -z-10 absolute h-full">
+  <div data-us-project="aNQ1HJcO2IvNyDCGls8J" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+  <script type="text/javascript">
+    !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+  </script>
+</div></div>
+
+  <!-- Background Gradients (Intensified) -->
+  <div class="fixed top-0 w-full h-screen -z-10 overflow-hidden pointer-events-none">
+    <div class="-translate-x-1/2 blur-[120px] bg-violet-700/30 w-[900px] h-[500px] rounded-full absolute top-[-100px] left-1/2 mix-blend-screen"></div>
+    <div class="absolute bottom-0 right-0 w-[800px] h-[600px] bg-fuchsia-800/20 blur-[130px] rounded-full translate-y-1/2 translate-x-1/4 mix-blend-screen"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed z-50 bg-[#030005]/80 w-full border-white/5 border-b top-0 backdrop-blur-md">
+    <div class="flex h-16 max-w-7xl mx-auto px-6 items-center justify-between">
+      <a href="project.html" class="text-xl font-bold tracking-tight text-white font-display hover:text-violet-300 transition-colors">Denys Dudar</a>
+      
+      <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+        <a href="project.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Overview</a>
+        <a href="case_studies.html" class="text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">Case Studies</a>
+        <a href="About Page.html" class="hover:text-white hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-all">About</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+            Resume
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-32 pb-24 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- Section 1: Hero -->
+        <section class="max-w-4xl mx-auto text-center mb-24 animate-on-scroll">
+            <span class="inline-block py-1 px-3 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-semibold tracking-wide uppercase mb-6">Fintech</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tighter leading-[1.1] mb-8 font-display">
+                Payroll Management.
+            </h1>
+        </section>
+
+        <!-- Section 2: Large Image -->
+        <section class="mb-24 animate-on-scroll">
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="payroll/payroll-hero.png" alt="Payroll Management Hero" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 3: Overview -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Overview</h2>
+            <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                <p>
+                    Payroll Management – a market pricing tool where payroll professionals can not only find all the data they need but also manage data in all the possible ways. Payroll Management aims to reduce the additional operational work for payroll managers by automating lots of work and performing mass action thus saving tons of time of manual work for experts.
+                </p>
+                <p>
+                    Working on this product was a rare case when a customer approaches us with research that was conducted upfront – the customer has run a couple of user interviews where the aim was to validate the product value. Also, there were certain designs done earlier by the third party but when the client faced design challenges with complex and comprehensive interface needs he approached us for help. And we were happy to tackle those challenges. Not only the challenge was solved but we also validated the design solutions with actual users – payroll managers that currently work for the competitors.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Challenges -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll">
+            <h2 class="text-2xl font-semibold text-white mb-6 font-display">Challenges</h2>
+            <ul class="space-y-4 text-neutral-400 text-lg">
+                <li class="flex gap-3">
+                    <span class="text-violet-500 mt-1.5">•</span>
+                    <span>Complex business logic</span>
+                </li>
+                <li class="flex gap-3">
+                    <span class="text-violet-500 mt-1.5">•</span>
+                    <span>The requirement to provide the possibility to view data from multiple different angles</span>
+                </li>
+                <li class="flex gap-3">
+                    <span class="text-violet-500 mt-1.5">•</span>
+                    <span>The necessity to show tons of data still keeping the interface clean and easily scalable</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 5: Step 1 - Discovery Phase -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <div class="text-violet-400 font-mono text-sm mb-2">Step 1</div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Discovery Phase</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        Stakeholder interview, deep dive into the project domain, and studying current solutions. Studying user interviews that were conducted upfront by the client. This activity helped us to learn more about the industry as well as to develop great empathy towards our users.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="payroll/payroll-discovery.png" alt="Discovery Phase" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 6: Step 2 - Rapid Prototyping -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <div class="text-violet-400 font-mono text-sm mb-2">Step 2</div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Rapid Prototyping</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        Low fidelity wireframing with weekly sync-ups with our client
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="payroll/payroll-prototyping.png" alt="Rapid Prototyping" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 7: Step 3 - User Testing -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <div class="text-violet-400 font-mono text-sm mb-2">Step 3</div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">User Testing</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        We tested our interaction design on target users – payroll managers. User testing helps to improve the design by seeing how users actually use our product. We used Remote Moderated (Qualitative) User Testing Method and ran user testing with 6 users. According to NNG to get valid data 5-7 users is enough for Qualitative User Testing.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="payroll/payroll-user-testing.png" alt="User Testing" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 8: Step 4 - The Second Iteration -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <div class="text-violet-400 font-mono text-sm mb-2">Step 4</div>
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">The Second Iteration of the Design</h2>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-[#0C0622] border border-white/5">
+                <img src="payroll/payroll-iteration.png" alt="Second Iteration" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 9: Result -->
+        <section class="max-w-5xl mx-auto mb-24 animate-on-scroll">
+            <div class="max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl font-semibold text-white mb-6 font-display">Result</h2>
+                <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p>
+                        Fully clickable prototype verified with target users and all the deliverables ready for development.
+                    </p>
+                </div>
+            </div>
+            <div class="relative w-full h-auto rounded-3xl overflow-hidden bg-neutral-900 border border-white/5">
+                <img src="payroll/payroll-result.png" alt="Result" class="w-full h-auto object-cover block">
+            </div>
+        </section>
+
+        <!-- Section 10: Awards & Impact -->
+        <section class="max-w-6xl mx-auto mb-24 animate-on-scroll">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-300">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-violet-400"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
+                    </span>
+                    Currently working on this Project
+                </div>
+            </div>
+
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-6 font-display">
+                    Proven impact with <br>
+                    <span class="text-violet-400">2025 G2 Awards</span>
+                </h2>
+                <p class="text-neutral-400 max-w-2xl mx-auto text-lg">
+                    These wins confirm that our user-focused approach helped the platform become a high performer known for its ease of use and exceptional support.
+                </p>
+            </div>
+
+            <!-- Interactive Awards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+                
+                <!-- Award 1: Best Support -->
+                <div class="g2-card group relative h-64 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden transform-style-3d hover:shadow-2xl hover:shadow-violet-900/20 transition-all duration-300">
+                    <!-- Liquid BG -->
+                    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                        <div class="absolute top-[-20%] left-[-20%] w-48 h-48 bg-violet-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob"></div>
+                        <div class="absolute bottom-[-20%] right-[-20%] w-48 h-48 bg-fuchsia-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob animation-delay-2000"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-30 backdrop-blur-[1px]"></div>
+                    </div>
+                    
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 transform-gpu translate-z-10">
+                        <div class="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Spring 2025</div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-1">Best</h3>
+                        <h3 class="text-2xl font-bold text-white font-display">Support</h3>
+                        <!-- G2 Badge Icon Placeholder -->
+                        <div class="mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Award 2: High Performer -->
+                <div class="g2-card group relative h-64 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden transform-style-3d hover:shadow-2xl hover:shadow-violet-900/20 transition-all duration-300">
+                    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                        <div class="absolute top-[-20%] right-[-20%] w-48 h-48 bg-blue-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob"></div>
+                        <div class="absolute bottom-[-20%] left-[-20%] w-48 h-48 bg-violet-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob animation-delay-4000"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-30 backdrop-blur-[1px]"></div>
+                    </div>
+                    
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 transform-gpu translate-z-10">
+                        <div class="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Spring 2025</div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-1">High</h3>
+                        <h3 class="text-2xl font-bold text-white font-display">Performer</h3>
+                        <div class="mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Award 3: Easiest To Do Business -->
+                <div class="g2-card group relative h-64 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden transform-style-3d hover:shadow-2xl hover:shadow-violet-900/20 transition-all duration-300">
+                    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                        <div class="absolute top-[20%] left-[20%] w-48 h-48 bg-emerald-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob"></div>
+                        <div class="absolute bottom-[-20%] right-[-20%] w-48 h-48 bg-teal-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob animation-delay-2000"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-30 backdrop-blur-[1px]"></div>
+                    </div>
+                    
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 transform-gpu translate-z-10">
+                        <div class="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Spring 2025</div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-1">Easiest To</h3>
+                        <h3 class="text-2xl font-bold text-white font-display">Do Business</h3>
+                        <div class="mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Award 4: Momentum Leader -->
+                <div class="g2-card group relative h-64 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden transform-style-3d hover:shadow-2xl hover:shadow-violet-900/20 transition-all duration-300">
+                    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                        <div class="absolute top-[-20%] left-[20%] w-48 h-48 bg-orange-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob"></div>
+                        <div class="absolute bottom-[10%] right-[-10%] w-48 h-48 bg-red-600/30 rounded-full mix-blend-screen filter blur-[40px] animate-blob animation-delay-4000"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-30 backdrop-blur-[1px]"></div>
+                    </div>
+                    
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 transform-gpu translate-z-10">
+                        <div class="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Spring 2025</div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-1">Momentum</h3>
+                        <h3 class="text-2xl font-bold text-white font-display">Leader</h3>
+                        <div class="mt-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Series A Funding -->
+            <div class="outer relative w-full h-[300px] rounded-2xl p-[1px] overflow-hidden group mx-auto"
+                style="background: radial-gradient(circle 400px at 0% 0%, rgba(255,255,255,0.1), transparent);">
+                
+                <!-- Moving Dot -->
+                <div class="dot w-[3px] aspect-square absolute bg-white rounded-full z-[2] opacity-80"
+                    style="box-shadow: 0 0 15px #ffffff; right: 10%; top: 10%; animation: moveDot 8s linear infinite;"></div>
+                
+                <div class="card relative z-[1] flex flex-col items-center justify-center text-center w-full h-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+                    
+                    <!-- Ray Effect -->
+                    <div class="ray absolute top-0 left-0 opacity-20 w-[300px] h-[60px] rounded-full rotate-[40deg] bg-violet-500 blur-[60px]"
+                        style="transform-origin: 10%;"></div>
+                    
+                    <!-- Content -->
+                    <div class="relative z-20 p-8">
+                        <div class="text-violet-300 font-mono text-xs uppercase tracking-[0.2em] mb-4">Series A Funding</div>
+                        
+                        <h3 class="text-6xl md:text-7xl font-bold tracking-tighter mb-4"
+                            style="background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: textShine 5s linear infinite;">
+                            Raised $33M
+                        </h3>
+                        
+                        <p class="text-neutral-400 max-w-lg mx-auto text-lg font-light leading-relaxed">
+                            Secured major funding to accelerate our mission and expand operations globally.
+                        </p>
+                    </div>
+
+                    <!-- Decorative Lines -->
+                    <div class="line topl absolute w-full h-[1px] top-[10%] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div class="line leftl absolute w-[1px] h-full left-[10%] bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+                    <div class="line bottoml absolute w-full h-[1px] bottom-[10%] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div class="line rightl absolute w-[1px] h-full right-[10%] bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+                </div>
+            </div>
+
+            <style>
+                @keyframes moveDot {
+                    0%, 100% { top: 10%; right: 10%; }
+                    25% { top: 10%; right: calc(90% - 3px); }
+                    50% { top: calc(90% - 3px); right: calc(90% - 3px); }
+                    75% { top: calc(90% - 3px); right: 10%; }
+                }
+                @keyframes textShine {
+                    to { background-position: 200% center; }
+                }
+            </style>
+        </section>
+
+        <!-- Section 11: Testimonial -->
+        <section class="max-w-3xl mx-auto mb-24 animate-on-scroll perspective-[2000px]">
+             <!-- Parallax Card -->
+             <div id="testimonial-card" class="group relative rounded-3xl bg-[#0A0A0A] p-6 md:p-10 h-auto md:h-[400px] overflow-hidden transition-all duration-200 ease-out transform-style-3d border border-white/10 hover:shadow-2xl hover:shadow-violet-900/20">
+                
+                <!-- Liquid Glass Background -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <!-- Animated Blobs -->
+                    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-violet-600/20 rounded-full mix-blend-screen filter blur-[80px] animate-blob"></div>
+                    <div class="absolute top-[10%] right-[-10%] w-96 h-96 bg-blue-600/20 rounded-full mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000"></div>
+                    <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-fuchsia-600/20 rounded-full mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000"></div>
+                    
+                    <!-- Glass Texture/Noise -->
+                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+                    
+                    <!-- Glass Surface Shine -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 backdrop-blur-[1px]"></div>
+                </div>
+
+                <!-- Hover Shine Effect (Parallax) -->
+                <div id="card-shine" class="absolute inset-0 z-[1] bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100"></div>
+
+                <!-- Content Layer -->
+                <div class="relative z-10 flex flex-col justify-between h-full transform-gpu translate-z-10">
+                    
+                    <!-- Header: Avatar & Logo -->
+                    <div class="flex items-center mb-4 translate-z-20">
+                        <div class="relative flex items-center">
+                            <!-- User Avatar -->
+                            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#0A0A0A] relative z-10 shadow-lg">
+                                <img src="payroll/client-alan-miegel.png" alt="Alan Miegel" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Company Logo (Overlapping) -->
+                            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#0A0A0A] -ml-4 relative z-0 bg-white flex items-center justify-center shadow-lg">
+                                <!-- Simple Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-black"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote Text -->
+                    <div class="mb-4 translate-z-30">
+                        <p class="text-base md:text-lg font-medium leading-relaxed text-white drop-shadow-sm font-display tracking-tight">
+                            "They took an incredible complex (and abstract) process and truly understood it. The design that the Cieden team submitted is getting a lot of positive feedback for being clean, visually appealing, and eye-catching. The company appreciates how the company took time to get in the head of users to understand their objectives, resulting in the design becoming more intuitive."
+                        </p>
+                    </div>
+
+                    <!-- Author Info -->
+                    <div class="translate-z-20">
+                        <h4 class="text-white font-bold text-base tracking-wide">Alan Miegel</h4>
+                        <p class="text-neutral-400 font-medium text-sm">Co-Founder and CEO</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View Other Work -->
+        <section class="max-w-7xl mx-auto px-6 mb-24 animate-on-scroll">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-semibold text-white font-display">View Other Work</h2>
+                <a href="case_studies.html" class="text-sm font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+                    View All
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Real Estate -->
+                <a href="project_real_estate.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            Real Estate
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Property Investment Platform</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Revamped UX design for a sustainable property investment project.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Real Estate</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project SaaS Enterprise -->
+                <a href="project_saas_enterprise.html" class="block group border-gradient relative rounded-2xl bg-[#0A0A0A] p-1 hover:bg-[#0f0f0f] transition-colors">
+                    <div class="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-neutral-900 border border-white/5">
+                        <div class="absolute inset-0 flex items-center justify-center text-neutral-700 font-display text-2xl group-hover:scale-105 transition-transform duration-500 group-hover:text-violet-300/50">Project Image</div>
+                        <div class="absolute top-4 left-4 bg-black/60 backdrop-blur text-[10px] font-bold px-3 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest text-violet-300 shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                            SaaS / Enterprise
+                        </div>
+                    </div>
+                    <div class="px-4 pb-6 pt-2">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-semibold text-white group-hover:text-violet-400 transition-colors">Unified Conferencing Solution</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5 text-neutral-500 group-hover:text-violet-400 transition-colors"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                        </div>
+                        <p class="text-sm text-neutral-400 leading-relaxed mb-4 line-clamp-2">Merging features of three conferencing tools into a unified internal solution for a leading education company.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">UX/UI</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-neutral-500 border border-white/5 px-2 py-1 rounded group-hover:border-violet-500/20 group-hover:text-violet-300/70 transition-colors">Enterprise</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Parallax Scripts -->
+        <script>
+            // Main Testimonial Card
+            const card = document.getElementById('testimonial-card');
+            const shine = document.getElementById('card-shine');
+
+            if (card && shine) {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -3;
+                    const rotateY = ((x - centerX) / centerX) * 3;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    const shineX = (x / rect.width) * 100;
+                    const shineY = (y / rect.height) * 100;
+                    shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.1), transparent 50%)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                    shine.style.background = 'none';
+                });
+            }
+
+            // G2 Awards Cards
+            document.querySelectorAll('.g2-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
+            });
+        </script>
+
+    </div>
+  </main>
+
+  <!-- Footer CTA -->
+  <section class="animate-on-scroll border-white/5 border-t pt-20 pr-6 pb-20 pl-6" id="contact">
+    <div class="relative max-w-4xl mx-auto text-center">
+      <div class="flex items-center justify-center mb-6">
+        <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wide border rounded-full px-3 py-1 text-neutral-300/80 bg-white/5 border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-violet-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+          Start Your Transformation
+        </span>
+      </div>
+
+      <h2 class="md:text-6xl text-4xl font-semibold text-white tracking-tight">
+        Have a Great
+      </h2>
+      <h2 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mt-1">
+        <span class="bg-clip-text font-medium text-transparent font-serif bg-gradient-to-br from-[#8A5CF5] via-[#ffffff] to-[#8A5CF5] pr-2 drop-shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+          Idea?
+        </span>
+      </h2>
+      <p class="md:text-lg text-base text-neutral-400 max-w-xl mt-6 mr-auto ml-auto">
+        I can help businesses employ design to improve communication and increase sales of products and services.
+      </p>
+
+      <div class="relative inline-block group mt-10">
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="shiny-cta group overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 rounded-full relative shadow-2xl inline-block">
+          <div class="z-10 flex gap-3 px-8 py-3 relative items-center">
+            <span class="text-base font-semibold tracking-tight text-white transition-colors group-hover:text-violet-100">
+              Get in Contact
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-5 h-5 text-violet-200 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="border-t border-white/5 bg-neutral-900/10 backdrop-blur-xl relative z-10">
+    <div class="max-w-7xl mx-auto">
+        <section class="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/5 border-b border-white/5 bg-transparent">
+            <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://dribbble.com/Asiko" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Dribbble</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://www.instagram.com/den.dudar/" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Instagram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="p-8 flex items-center justify-between group hover:bg-white/[0.05] transition-colors backdrop-blur-md">
+                <span class="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Download CV</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" class="lucide lucide-download w-4 h-4 text-neutral-600 group-hover:text-violet-400 group-hover:translate-y-1 transition-all"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+            </a>
+        </section>
+
+        <footer class="flex flex-col md:flex-row justify-between p-8 md:p-12 text-xs text-neutral-600 bg-transparent backdrop-blur-sm">
+            <div class="flex flex-col gap-2 mb-8 md:mb-0">
+                <a href="mailto:deni.dudar@gmail.com" class="text-neutral-400 hover:text-violet-400 transition-colors font-geist-mono">deni.dudar@gmail.com</a>
+                <span class="text-neutral-600 font-geist-mono">+380 63 742 09 82</span>
+            </div>
+            <div class="flex flex-col gap-2 text-left md:text-right md:items-end">
+                <span class="text-neutral-500">Lviv, Ukraine</span>
+                <span class="text-neutral-700">© 2026 Denis Dudar Portfolio</span>
+            </div>
+        </footer>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Scroll Animation Observer
+    (function () {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+            observer.observe(el);
+        });
+    })();
+  </script>
+
+</body></html>
