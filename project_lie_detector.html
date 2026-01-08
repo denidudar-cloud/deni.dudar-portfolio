@@ -7,7 +7,22 @@
      <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
      <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style>
+    <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }
+    /* Mobile Menu Liquid Glass & Animation */
+    @keyframes liquid-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .liquid-glass {
+      background: linear-gradient(-45deg, rgba(3,0,5,0.9), rgba(20,5,30,0.85), rgba(3,0,5,0.95), rgba(30,10,40,0.8));
+      background-size: 400% 400%;
+      animation: liquid-gradient 15s ease infinite;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+</style>
     
     <style>
     :root {
@@ -105,7 +120,22 @@
     ::-webkit-scrollbar-track { background: #0a0a0a; }
     ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #444; }
-    </style>
+    
+    /* Mobile Menu Liquid Glass & Animation */
+    @keyframes liquid-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .liquid-glass {
+      background: linear-gradient(-45deg, rgba(3,0,5,0.9), rgba(20,5,30,0.85), rgba(3,0,5,0.95), rgba(30,10,40,0.8));
+      background-size: 400% 400%;
+      animation: liquid-gradient 15s ease infinite;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+</style>
 </head>
 <body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
 
@@ -135,16 +165,51 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
-            Resume
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
-          Get in Touch
-        </a>
+        <div class="hidden md:flex items-center gap-4">
+            <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xs font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+                Resume
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="relative border-gradient bg-transparent hover:bg-violet-500/10 transition-colors text-xs font-semibold text-white rounded-full px-4 py-1.5 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)]">
+              Get in Touch
+            </a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-white p-2 z-50 relative focus:outline-none">
+            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 18 18"/></svg>
+        </button>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 liquid-glass pt-24 px-6 md:hidden opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="flex flex-col space-y-8 text-center h-full">
+      <nav class="flex flex-col gap-6 items-start text-left">
+        <a href="project.html" class="text-3xl font-medium text-white hover:text-violet-300 transition-colors">Overview</a>
+        <a href="case_studies.html" class="text-3xl font-medium text-white hover:text-violet-300 transition-colors">Case Studies</a>
+        <a href="About Page.html" class="text-3xl font-medium text-white hover:text-violet-300 transition-colors">About</a>
+      </nav>
+      
+      <div class="pt-8 flex flex-col gap-6 items-start border-t border-white/10 mt-auto pb-12 w-full">
+        <a href="About Page Materials/CV-UXUI-Product-Designer-Denis-Dudar.pdf" target="_blank" class="text-xl font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-2">
+            Resume
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        
+        <a href="https://www.linkedin.com/in/denys-dudar-88274a164" target="_blank" class="shiny-cta group overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 rounded-full relative shadow-2xl inline-block w-full sm:w-auto">
+          <div class="z-10 flex gap-3 px-8 py-3 relative items-center justify-center">
+            <span class="text-lg font-semibold tracking-tight text-white transition-colors group-hover:text-violet-100">
+              Get in Touch
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-5 h-5 text-violet-200 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+
 
   <!-- Main Content -->
   <main class="pt-32 pb-24 min-h-screen">
@@ -494,6 +559,44 @@
             observer.observe(el);
         });
     })();
+  </script>
+
+
+  <script>
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('opacity-0');
+            
+            if (isHidden) {
+                // Open menu
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            } else {
+                // Close menu
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                document.body.style.overflow = '';
+            });
+        });
+    }
   </script>
 
 </body></html>
