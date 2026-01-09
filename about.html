@@ -201,6 +201,25 @@ h1, h2, h3, h4, h5, h6, .font-display {
       -webkit-backdrop-filter: blur(20px);
     }
 
+
+    @media (max-width: 1024px) {
+      .glass { width: 100% !important; max-width: 100% !important; }
+      /* 3. Reduce text size in book container for responsive */
+      .book-container .desc-h3 { font-size: 1.25rem !important; } /* text-xl -> text-lg or smaller */
+      .book-container .desc-p { font-size: 0.875rem !important; } /* text-sm -> text-xs */
+      
+      /* 4. Reduce card size in moments section (infinite scroll) */
+      #moments .w-\[350px\] { width: 280px !important; }
+      #moments .sm\:w-\[400px\] { width: 300px !important; }
+      
+      /* 2. Disable animation on About section for responsive */
+      #about .animate-on-scroll { 
+        opacity: 1 !important; 
+        transform: none !important; 
+        filter: none !important; 
+        animation: none !important;
+      }
+    }
 </style>
 <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }
     /* Mobile Menu Liquid Glass & Animation */
@@ -217,6 +236,25 @@ h1, h2, h3, h4, h5, h6, .font-display {
       -webkit-backdrop-filter: blur(20px);
     }
 
+
+    @media (max-width: 1024px) {
+      .glass { width: 100% !important; max-width: 100% !important; }
+      /* 3. Reduce text size in book container for responsive */
+      .book-container .desc-h3 { font-size: 1.25rem !important; } /* text-xl -> text-lg or smaller */
+      .book-container .desc-p { font-size: 0.875rem !important; } /* text-sm -> text-xs */
+      
+      /* 4. Reduce card size in moments section (infinite scroll) */
+      #moments .w-\[350px\] { width: 280px !important; }
+      #moments .sm\:w-\[400px\] { width: 300px !important; }
+      
+      /* 2. Disable animation on About section for responsive */
+      #about .animate-on-scroll { 
+        opacity: 1 !important; 
+        transform: none !important; 
+        filter: none !important; 
+        animation: none !important;
+      }
+    }
 </style>
 </head>
 <body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
