@@ -203,58 +203,38 @@ h1, h2, h3, h4, h5, h6, .font-display {
 
 
     @media (max-width: 1024px) {
-      .glass { width: 100% !important; max-width: 100% !important; }
       /* 3. Reduce text size in book container for responsive */
-      .book-container .desc-h3 { font-size: 1.25rem !important; } /* text-xl -> text-lg or smaller */
-      .book-container .desc-p { font-size: 0.875rem !important; } /* text-sm -> text-xs */
+      .book-container .desc-h3 { font-size: 1rem !important; line-height: 1.2 !important; margin-bottom: 4px !important; }
+      .book-container .desc-p { font-size: 0.75rem !important; line-height: 1.2 !important; }
       
       /* 4. Reduce card size in moments section (infinite scroll) */
-      #moments .w-\[350px\] { width: 280px !important; }
-      #moments .sm\:w-\[400px\] { width: 300px !important; }
+      #moments .w-\[350px\] { width: 220px !important; min-width: 220px !important; }
+      #moments .sm\:w-\[400px\] { width: 220px !important; min-width: 220px !important; }
+      #moments .group { height: 320px !important; }
       
       /* 2. Disable animation on About section for responsive */
-      #about .animate-on-scroll { 
+      #about .animate-on-scroll,
+      #about .animate-on-scroll.animate { 
         opacity: 1 !important; 
         transform: none !important; 
         filter: none !important; 
         animation: none !important;
+        transition: none !important;
       }
+
+      /* Disable marquee vertical animation */
+      .animate-marquee-vertical { animation: none !important; transform: none !important; }
+      /* Hide the duplicate grid used for marquee */
+      .animate-marquee-vertical > div:nth-child(2) { display: none !important; }
+      /* Expand container to show content */
+      #about .h-\[600px\] { height: auto !important; overflow: visible !important; mask-image: none !important; -webkit-mask-image: none !important; }
+    }
+
+    @media (max-width: 480px) {
+      .glass { width: 100% !important; max-width: 100% !important; }
     }
 </style>
 <link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }
-    /* Mobile Menu Liquid Glass & Animation */
-    @keyframes liquid-gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .liquid-glass {
-      background: linear-gradient(-45deg, rgba(3,0,5,0.9), rgba(20,5,30,0.85), rgba(3,0,5,0.95), rgba(30,10,40,0.8));
-      background-size: 400% 400%;
-      animation: liquid-gradient 15s ease infinite;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-
-    @media (max-width: 1024px) {
-      .glass { width: 100% !important; max-width: 100% !important; }
-      /* 3. Reduce text size in book container for responsive */
-      .book-container .desc-h3 { font-size: 1.25rem !important; } /* text-xl -> text-lg or smaller */
-      .book-container .desc-p { font-size: 0.875rem !important; } /* text-sm -> text-xs */
-      
-      /* 4. Reduce card size in moments section (infinite scroll) */
-      #moments .w-\[350px\] { width: 280px !important; }
-      #moments .sm\:w-\[400px\] { width: 300px !important; }
-      
-      /* 2. Disable animation on About section for responsive */
-      #about .animate-on-scroll { 
-        opacity: 1 !important; 
-        transform: none !important; 
-        filter: none !important; 
-        animation: none !important;
-      }
-    }
 </style>
 </head>
 <body class="antialiased selection:bg-violet-500/40 selection:text-violet-100">
@@ -667,7 +647,7 @@ h1, h2, h3, h4, h5, h6, .font-display {
             <p class="mt-4 text-neutral-400 max-w-2xl mx-auto">Continuous learning is the key. Hover to view details.</p>
         </div>
 
-        <div class="flex overflow-visible w-full pt-12 pr-12 pb-12 pl-12 relative items-center justify-center">
+        <div class="flex overflow-visible w-full md:p-12 p-4 relative items-center justify-center">
             <div class="fan-container" style="display: flex; justify-content: center; align-items: center; height: 400px;">
                 
                 <!-- Card 1 (Left Outer) -->
@@ -855,45 +835,6 @@ h1, h2, h3, h4, h5, h6, .font-display {
         })();
     </script>
 
-
-  <script>
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menu-icon');
-    const closeIcon = document.getElementById('close-icon');
-
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => {
-            const isHidden = mobileMenu.classList.contains('opacity-0');
-            
-            if (isHidden) {
-                // Open menu
-                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-                menuIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
-            } else {
-                // Close menu
-                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-                document.body.style.overflow = ''; // Restore scrolling
-            }
-        });
-
-        // Close menu when clicking a link
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
-        });
-    }
-  </script>
-
-</body></html>
 
   <script>
     const menuBtn = document.getElementById('mobile-menu-btn');
